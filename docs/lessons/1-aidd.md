@@ -39,7 +39,7 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 ### Modelos, agentes y editores
 
 - **Modelos:** GPT-5, Claude Sonnet 4, Gemini 2.5
-- **Agentes:** GitHub Copilot, Cursor Composer, Claude Code
+- **Agentes:** GitHub Copilot, Cursor Composer, Claude Code, Gemini CLI
 - **Editores:** Visual Studio Code, Cursor, el CLI, la Web, etc.
 
 ---
@@ -58,23 +58,23 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ### Metodologías
 
-- **Vibe Coding:** Desarrollo interactivo con IA
+- **Vibe Coding:** Desarrollo interactivo con IA (ChOP: Chat Oriented Programming)
 - **Spec Driven Development (SDD):** Desarrollo guiado por especificaciones
 
 ---
 
 ### Principios
 
-1. Preguntar bien
-2. Agregar contexto
-3. Verificar el resultado 
+1. Preguntar bien (_Prompt Engineering_)
+2. Agregar contexto (_Context Engineering_)
+3. Verificar el resultado (_Trust but verify_)
 
 ---
 
 ### Roles / Etapas
 
 - **Architect**: Se enfoca en el diseño y arquitectura de alto nivel.
-- **Builder***: Centrado en la implementación y tareas de codificación.
+- **Builder**: Centrado en la implementación y tareas de codificación.
 - **Craftsman**: Asegura la calidad a través de pruebas y refinamiento.
 
 ---
@@ -82,8 +82,8 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 ### Manifiesto AIDD:
 
 **Humano en el Bucle**: Tu trabajo es más estratégico, colaborativo y responsable.
-**Reglas sobre Herramientas**: Las reglas y procesos aportan valor.
-**Calidad IA**: No solo más productividad, también software mantenible.
+**Reglas sobre Herramientas**: Los procedimientos y estándares aportan valor.
+**Calidad IA**: No solo más productividad, también software más mantenible.
 
 ---
 
@@ -91,14 +91,23 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ### GitHub Copilot
 
-- Instalación y configuración (VS Code, terminal, web...)
-- Prompts : Biblioteca de consultas y comandos. Compartida y evolutiva
-- Instructions: Guías, plantillas y guardias automáticas o manuales
-- Chat Modes: Pre configuraciones y herramientas para roles específicos
+- Instalación y configuración (**VS Code + GitHub Copilot**)
+- `Prompts` : Biblioteca de consultas y comandos. Compartida y evolutiva
+- `Instructions`: Guías, plantillas y guardias automáticas o manuales
+- `Chat Modes`: Pre configuraciones y herramientas para roles específicos
 
 ---
 
 ## CONCLUSIONES
+
+- La IA afecta a todas las fases del SDLC. Tu debes controlar cómo.
+- Conseguirás más productividad y mejor calidad.
+
+### Links
+
+- [Awesome Copilot](https://github.com/github/awesome-copilot)
+- [AIDDbot](https://github.com/aiddbot/aiddbot)
+- [Comparación de metodologías](https://youtu.be/sGYvGUkerA0?si=GPiSRMtFeYVhmp5T)
 
  ### Próxima lección: 
  **Calidad con IA.**
