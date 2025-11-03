@@ -28,5 +28,6 @@
     "inlineSuggest.enable": true,
     "inlineSuggest.showSuggestionsAlways": true
   },
-  "github.copilot.nextEditSuggestions.enabled": true
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
