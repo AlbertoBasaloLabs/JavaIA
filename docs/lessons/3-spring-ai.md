@@ -27,6 +27,8 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 `spring.ai.openai.api-key=${OPENAI_API_KEY}
 spring.ai.openai.chat.options.model=gpt-5-nano`
 
+- [Almacenamiento de claves API como variables de entorno](https://gargankush.medium.com/storing-api-keys-as-environmental-variable-for-windows-linux-and-mac-and-accessing-it-through-974ba7c5109f)
+
 ```java
 private final ChatClient chatClient;
 public AstroController(ChatClient.Builder builder) {
