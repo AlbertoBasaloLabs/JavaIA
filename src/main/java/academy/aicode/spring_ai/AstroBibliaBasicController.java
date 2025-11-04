@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 @RestController
-public class AstroBibliaController {
+public class AstroBibliaBasicController {
   private final ChatClient chatClient;
 
   private static final String ASTRONOMY_SYSTEM_MESSAGE = "Eres un experto en Astronomía. Responde solo preguntas relacionadas con la Astronomía. Si la pregunta no está relacionada con la Astronomía, responde con 'No sé sobre ese tema.'";
 
-  public AstroBibliaController(ChatClient.Builder chatClientBuilder) {
+  public AstroBibliaBasicController(ChatClient.Builder chatClientBuilder) {
     this.chatClient = chatClientBuilder.build();
   }
 
@@ -25,7 +25,7 @@ public class AstroBibliaController {
    * @param prompt
    * @return
    */
-  @GetMapping("/ama")
+  @GetMapping("basic/ama")
   public String getAnything(@RequestParam String prompt) {
 
     return chatClient.prompt()
@@ -39,7 +39,7 @@ public class AstroBibliaController {
    * @param prompt
    * @return
    */
-  @GetMapping("/astro")
+  @GetMapping("basic/astro")
   public String getAstronomy(@RequestParam String prompt) {
     return chatClient.prompt()
         .system(ASTRONOMY_SYSTEM_MESSAGE)
@@ -53,7 +53,7 @@ public class AstroBibliaController {
    * @param planet
    * @return
    */
-  @GetMapping("/planet")
+  @GetMapping("basic/planet")
   public String getPlanetInfo(@RequestParam String planet) {
     var userPromptTemplate = "Proporciona una breve descripción del planeta {{planet}} incluyendo sus características clave y cualquier dato interesante.";
     var userPrompt = userPromptTemplate.replace("{{planet}}", planet);
@@ -70,7 +70,7 @@ public class AstroBibliaController {
    * @param planet
    * @return
    */
-  @GetMapping("/planet/satellites")
+  @GetMapping("basic/planet/satellites")
   public String getPlanetSatellites(@RequestParam String planet) {
 
     return chatClient.prompt()
@@ -88,7 +88,7 @@ public class AstroBibliaController {
    * @param planet
    * @return
    */
-  @GetMapping("/planet/satellites/structured")
+  @GetMapping("basic/planet/satellites/structured")
   public Satellites getPlanetSatellitesStructured(@RequestParam String planet) {
 
     return chatClient.prompt()
@@ -106,7 +106,7 @@ public class AstroBibliaController {
    * @param planet
    * @return
    */
-  @GetMapping("/planet/satellites/stream")
+  @GetMapping("basic/planet/satellites/stream")
   public Flux<String> getPlanetSatellitesStream(@RequestParam String planet) {
 
     return chatClient.prompt()

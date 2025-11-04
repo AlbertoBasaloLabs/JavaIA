@@ -15,13 +15,29 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ## CONEXIÓN
 
+### ¿Cuantos tokens consumes?
+
+### ¿Tienes problemas legales ?
+
 ---
 
 ## CONCEPTOS
 
+### Ingestión
+
+### Troceado
+
+### Indexado
+
+### Búsqueda
+
+### Generación aumentada
+
 ---
 
 ## CONCRETANDO
+
+Advisors Vector Store
 
 ---
 
