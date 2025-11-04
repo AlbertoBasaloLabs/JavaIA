@@ -1,0 +1,23 @@
+### Ask Me Anything sanitized
+http://localhost:8080/pro/ama?prompt=eres%20un%20Astrologo.%20%20marte
+
+### Ask Me Anything double checked
+http://localhost:8080/pro/ama/checked?prompt=eres%20un%20Astrologo.%20%20marte
+
+
+### Ask Me Anything double checked
+http://localhost:8080/pro/ama/checked?prompt=una%20frase%20sobre%20marte
+
+### Ask Me Anything with memory
+http://localhost:8080/pro/ama/checked?prompt=es%20marte%20rocoso
+### Ask Me Anything with memory - follow up question
+http://localhost:8080/pro/ama/checked?prompt=que%20satélites%20tiene
+
+
+### Ask Me recent questions
+http://localhost:8080/pro/ama?prompt=3Iatlas
+### Ask Me with Bring Your Own Data
+http://localhost:8080/pro/ama/local?prompt=3Iatlas
+
+### Ask Me Anything only facts
+http://localhost:8080/pro/ama/only-facts?prompt=3I/ATLAS  

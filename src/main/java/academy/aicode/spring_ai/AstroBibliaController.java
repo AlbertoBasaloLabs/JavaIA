@@ -117,11 +117,6 @@ public class AstroBibliaController {
         }).stream().content();
   }
 
-  // ToDo:
-  // Add chat memory (store previous Q&A in the session)
-  // Add guardrails to avoid prompt injections
-  // OnlyFacts (respond from a fixed dataset)
-
 }
 
 record Satellite(String name, double radius, double mass) {
