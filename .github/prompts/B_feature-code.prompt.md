@@ -16,11 +16,8 @@ Best practice instructions:
 - [Clean Code Instructions](../instructions/bst_clean-code.instructions.md)
 
 Technical instructions:
-- [lng-{language} Instructions](../instructions/lng_{language}.instructions.md) for any specific language involved
-- [frm-{framework} Instructions](../instructions/frm_{framework}.instructions.md) for any specific framework involved
-- [lib-{library} Instructions](../instructions/lib_{library}.instructions.md) for any specific library involved
-- [tol-{tool} Instructions](../instructions/tol_{tool}.instructions.md) for any specific tool involved
-  
+- [lng-java Instructions](../instructions/lng_java.instructions.md) for any specific language involved
+
 ## Workflow
 
 - [ ] Create a new git branch named `dev/{specId}` and switch to it.
