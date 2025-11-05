@@ -1,4 +1,4 @@
-package academy.aicode.spring_ai;
+package academy.aicode.distance;
 
 public class DistanceConversionService {
   public double convert(double value, ConversionFactorProvider.Unit from, ConversionFactorProvider.Unit to) {

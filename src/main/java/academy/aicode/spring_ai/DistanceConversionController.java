@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import academy.aicode.distance.ConversionFactorProvider;
+import academy.aicode.distance.DistanceConversionRequest;
+import academy.aicode.distance.DistanceConversionResponse;
+import academy.aicode.distance.DistanceConversionService;
+
 @RestController
 @RequestMapping("/api/distance-conversion")
 public class DistanceConversionController {
