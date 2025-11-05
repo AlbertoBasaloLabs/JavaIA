@@ -77,5 +77,4 @@ public class AstroBibliaToolController {
   }
 }
 
-// ToDo: Tools (fetch, UA converter)
 // ToDo: Vector DB (ingest, query)

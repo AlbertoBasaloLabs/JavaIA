@@ -23,15 +23,25 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ## CONCEPTOS
 
-### Ingestión
+### RAG
 
-### Troceado
+#### Web fetching
 
-### Indexado
+#### Tools
 
-### Búsqueda
+### Vectors
 
-### Generación aumentada
+Los vectores son representaciones numéricas de datos que permiten a los modelos de IA comprender y procesar información de manera más efectiva. En el contexto de RAG, los vectores se utilizan para representar documentos, consultas y otros elementos de información en un espacio de alta dimensión.
+
+#### Ingestión
+
+#### Troceado
+
+#### Indexado
+
+#### Búsqueda
+
+#### Generación aumentada
 
 ---
 
