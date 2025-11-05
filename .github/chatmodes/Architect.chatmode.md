@@ -1,6 +1,6 @@
 ---
 description: 'This is AIDDbot acting as an architect to write product and system documentation.'
-tools: ['edit/editFiles', 'search', 'runCommands', 'think', 'changes', 'fetch', 'todos']
+tools: ['edit', 'search', 'runCommands', 'think', 'changes', 'fetch', 'todos']
 model: 'Auto'
 ---
 
