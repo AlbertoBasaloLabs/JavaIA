@@ -9,10 +9,13 @@ public class AstroBibliaToolController {
 
   private final ChatClient chatClient;
   private final WikiToolService wikiToolService;
+  private final DistanceConversionToolService distanceConversionToolService;
 
-  public AstroBibliaToolController(ChatClient.Builder chatClientBuilder, WikiToolService wikiToolService) {
+  public AstroBibliaToolController(ChatClient.Builder chatClientBuilder, WikiToolService wikiToolService,
+      DistanceConversionToolService distanceConversionToolService) {
     this.chatClient = chatClientBuilder.build();
     this.wikiToolService = wikiToolService;
+    this.distanceConversionToolService = distanceConversionToolService;
   }
 
   /**
@@ -33,6 +36,22 @@ public class AstroBibliaToolController {
                 + "Si faltan datos responde 'No pude encontrar información confiable sobre ese tema.'")
         .user(prompt)
         .tools(wikiToolService)
+        .call()
+        .content();
+  }
+
+  @GetMapping("tool/ama/distance")
+  public String getDistanceConversion(String prompt) {
+    if (prompt == null || prompt.isBlank()) {
+      return "No prompt provided.";
+    }
+    return chatClient.prompt()
+        .system(
+            "You are a helpful assistant that converts astronomical distances. "
+                + "Use the DistanceConverter tool when the user asks to convert distances. "
+                + "Supported units are: KILOMETER, AU, LIGHT_YEAR, PARSEC.")
+        .user(prompt)
+        .tools(distanceConversionToolService)
         .call()
         .content();
   }

@@ -1,5 +1,8 @@
 package academy.aicode.distance;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class DistanceConversionService {
   public double convert(double value, ConversionFactorProvider.Unit from, ConversionFactorProvider.Unit to) {
     double valueInKm = value * ConversionFactorProvider.getToKilometerFactor(from);
