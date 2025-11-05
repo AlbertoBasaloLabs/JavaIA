@@ -33,6 +33,12 @@ public class AstroBibliaRagController {
     this.chatClient = chatClientBuilder.build();
   }
 
+  /**
+   * Aka "Ask Me Anything" with local data
+   * 
+   * @param prompt
+   * @return
+   */
   @GetMapping("rag/ama/local")
   public String getLocalData(@RequestParam String prompt) {
     var localInfo = localData(prompt);

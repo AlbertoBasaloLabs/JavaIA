@@ -19,7 +19,7 @@ public class AstroBibliaSafeController {
     this.chatClient = chatClientBuilder.defaultAdvisors(memoryAdvisor).build();
   }
 
-  /*
+  /**
    * Aka "Ask Me Anything"
    * 
    * @param prompt will be sanitized to avoid prompt injections
@@ -45,7 +45,7 @@ public class AstroBibliaSafeController {
     return userInput.trim();
   }
 
-  /*
+  /**
    * Aka "Ask Me Anything"
    * 
    * @param prompt will double checked to avoid prompt injections
