@@ -45,11 +45,31 @@ public class AstroBibliaToolController {
     if (prompt == null || prompt.isBlank()) {
       return "No prompt provided.";
     }
+    var systemMessage = """
+        Eres un asistente útil que convierte distancias astronómicas.
+        Usa la herramienta DistanceConverter cuando el usuario pida convertir distancias.
+        Las unidades admitidas son: KILÓMETRO, AU, AÑO_LUZ, PARSEC.""";
     return chatClient.prompt()
-        .system(
-            "You are a helpful assistant that converts astronomical distances. "
-                + "Use the DistanceConverter tool when the user asks to convert distances. "
-                + "Supported units are: KILOMETER, AU, LIGHT_YEAR, PARSEC.")
+        .system(systemMessage)
+        .user(prompt)
+        .tools(distanceConversionToolService)
+        .call()
+        .content();
+  }
+
+  /**
+   * Astronomical distance in light time (years, minutes, seconds)
+   */
+  @GetMapping("tool/ama/distance/light-time")
+  public String getDistanceConversionLightTime(String prompt) {
+    if (prompt == null || prompt.isBlank()) {
+      return "No prompt provided.";
+    }
+    var systemMessage = """
+        Eres un asistente que proporciona distancias de la tierra a otros cuerpos celestes.
+        Usa la herramienta DistanceConverter para devolver la distancia en años luz, minutos luz o segundos luz según sea apropiado.""";
+    return chatClient.prompt()
+        .system(systemMessage)
         .user(prompt)
         .tools(distanceConversionToolService)
         .call()
