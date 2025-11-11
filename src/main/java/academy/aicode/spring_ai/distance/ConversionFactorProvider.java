@@ -4,7 +4,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides scientific constants and utilities for converting supported units to
+ * kilometers.
+ */
 public class ConversionFactorProvider {
+  /** Supported distance units. */
   public enum Unit {
     KILOMETER, AU, LIGHT_YEAR, PARSEC
   }
@@ -19,23 +24,51 @@ public class ConversionFactorProvider {
     TO_KILOMETER = Collections.unmodifiableMap(map);
   }
 
+  /**
+   * Determines if the given textual unit corresponds to a supported {@link Unit}.
+   *
+   * @param unit textual unit name (case-insensitive)
+   * @return true if supported; false otherwise
+   */
   public static boolean isSupported(String unit) {
     try {
       Unit.valueOf(unit.toUpperCase());
       return true;
-    } catch (Exception e) {
+    } catch (IllegalArgumentException e) {
       return false;
     }
   }
 
+  /**
+   * Returns the multiplicative factor to convert a {@link Unit} value into
+   * kilometers.
+   *
+   * @param unit the unit to convert from
+   * @return factor such that value_in_unit * factor = value_in_kilometers
+   * @throws NullPointerException if unit is null
+   */
   public static double getToKilometerFactor(Unit unit) {
+    // Map contains all enum keys; TO_KILOMETER.get(null) would NPE, keep explicit
+    // message
+    if (unit == null)
+      throw new NullPointerException("unit must not be null");
     return TO_KILOMETER.get(unit);
   }
 
+  /**
+   * Parses a textual unit name into a {@link Unit} (case-insensitive).
+   *
+   * @param unit textual unit name
+   * @return parsed {@link Unit}
+   * @throws IllegalArgumentException if the unit is not supported
+   */
   public static Unit parseUnit(String unit) {
     return Unit.valueOf(unit.toUpperCase());
   }
 
+  /**
+   * Returns an unmodifiable view of all unit-to-kilometer factors.
+   */
   public static Map<Unit, Double> getAllFactors() {
     return TO_KILOMETER;
   }

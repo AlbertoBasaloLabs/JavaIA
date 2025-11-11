@@ -2,6 +2,9 @@ package academy.aicode.spring_ai.distance;
 
 import java.time.Instant;
 
+/**
+ * Response payload conveying original and converted values alongside metadata.
+ */
 public class DistanceConversionResponse {
   private double originalValue;
   private String originalUnit;

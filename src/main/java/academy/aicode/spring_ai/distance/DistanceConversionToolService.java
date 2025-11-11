@@ -15,6 +15,9 @@ public class DistanceConversionToolService {
     this.distanceConversionService = distanceConversionService;
   }
 
+  /**
+   * Tool entry point for use by AI agents to perform distance conversions.
+   */
   @Tool(name = "DistanceConverter", description = "Converts astronomical distances between different units. Supported units: KILOMETER, AU, LIGHT_YEAR, PARSEC.")
   public String convertDistance(double value, String fromUnit, String toUnit) {
     log.info("Distance conversion requested: {} {} to {}", value, fromUnit, toUnit);

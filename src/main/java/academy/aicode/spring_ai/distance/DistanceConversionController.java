@@ -11,33 +11,47 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller exposing a single endpoint for converting distances between
+ * supported units.
+ *
+ * Validation (fail-fast):
+ * - Rejects negative input values.
+ * - Rejects unsupported units with a descriptive message listing supported
+ * values.
+ */
 @RestController
 @RequestMapping("/api/distance-conversion")
 public class DistanceConversionController {
-  private static final Logger logger = LoggerFactory.getLogger(DistanceConversionController.class);
-  private final DistanceConversionService service = new DistanceConversionService();
+  private static final Logger log = LoggerFactory.getLogger(DistanceConversionController.class);
+  private final DistanceConversionService service;
+
+  public DistanceConversionController(DistanceConversionService service) {
+    this.service = service;
+  }
 
   @PostMapping
   public ResponseEntity<?> convert(@RequestBody DistanceConversionRequest request) {
-    logger.info("Received conversion request: {} {} to {}", request.getInputValue(), request.getInputUnit(),
+    log.info("Received conversion request: {} {} to {}", request.getInputValue(), request.getInputUnit(),
         request.getOutputUnit());
     if (request.getInputValue() < 0) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Input value must be non-negative");
     }
-    if (!ConversionFactorProvider.isSupported(request.getInputUnit())
-        || !ConversionFactorProvider.isSupported(request.getOutputUnit())) {
+    String inputUnit = request.getInputUnit();
+    String outputUnit = request.getOutputUnit();
+    if (!ConversionFactorProvider.isSupported(inputUnit) || !ConversionFactorProvider.isSupported(outputUnit)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
           .body("Unsupported unit. Supported: KILOMETER, AU, LIGHT_YEAR, PARSEC");
     }
-    ConversionFactorProvider.Unit from = ConversionFactorProvider.parseUnit(request.getInputUnit());
-    ConversionFactorProvider.Unit to = ConversionFactorProvider.parseUnit(request.getOutputUnit());
+    var from = ConversionFactorProvider.parseUnit(inputUnit);
+    var to = ConversionFactorProvider.parseUnit(outputUnit);
     double converted = service.convert(request.getInputValue(), from, to);
     double factor = service.getConversionFactor(from, to);
     DistanceConversionResponse resp = new DistanceConversionResponse();
     resp.setOriginalValue(request.getInputValue());
-    resp.setOriginalUnit(request.getInputUnit().toUpperCase());
+    resp.setOriginalUnit(inputUnit.toUpperCase());
     resp.setConvertedValue(converted);
-    resp.setConvertedUnit(request.getOutputUnit().toUpperCase());
+    resp.setConvertedUnit(outputUnit.toUpperCase());
     resp.setConversionFactor(factor);
     resp.setTimestamp(Instant.now());
     return ResponseEntity.ok(resp);

@@ -1,5 +1,8 @@
 package academy.aicode.spring_ai.distance;
 
+/**
+ * Request payload for distance conversion operations.
+ */
 public class DistanceConversionRequest {
   private double inputValue;
   private String inputUnit;
