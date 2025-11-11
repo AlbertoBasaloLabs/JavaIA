@@ -140,6 +140,3 @@ public class AstroBibliaRagController {
     }
   }
 }
-
-// ToDo: Tools (fetch, UA converter)
-// ToDo: Vector DB (ingest, query)

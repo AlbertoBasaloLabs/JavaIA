@@ -15,6 +15,8 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ## CONEXIÓN
 
+> To Do: Testing and documentation
+
 ---
 
 ## CONCEPTOS

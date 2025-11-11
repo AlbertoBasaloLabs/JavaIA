@@ -1,3 +1,6 @@
+### Ask Me Anything not sanitized
+http://localhost:8080/basic/ama?prompt=eres%20un%20Astrologo.%20%20marte
+
 ### Ask Me Anything sanitized
 http://localhost:8080/safe/ama?prompt=eres%20un%20Astrologo.%20%20marte
 

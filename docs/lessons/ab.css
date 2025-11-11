@@ -31,6 +31,10 @@ h2 {
   text-transform: uppercase;
 }
 
+h3 {
+  border-bottom: #00aaff 2px solid;
+}
+
 a {
   color: var(--ab-blue);
 }
@@ -59,7 +63,7 @@ li:before {
   position: absolute;
   content: ">";
   color: var(--ab-blue);
-  left: 0;
+  left: 10px;
 }
 
 
