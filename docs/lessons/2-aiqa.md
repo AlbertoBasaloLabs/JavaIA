@@ -75,8 +75,12 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 - La calidad y el mantenimiento del software son innegociables.
 - La IA aumenta la productividad, y también la calidad.
+### Links
 
- ### Próxima lección: 
+- [AIDDbot](https://github.com/aiddbot/aiddbot)
+- [Spec Kit](https://github.com/github/spec-kit)
+
+### Próxima lección: 
  **Spring AI.**
 
 > _No es magia, es tecnología._ 
