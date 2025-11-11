@@ -1,4 +1,4 @@
-package academy.aicode.distance;
+package academy.aicode.spring_ai.distance;
 
 import java.util.Collections;
 import java.util.HashMap;

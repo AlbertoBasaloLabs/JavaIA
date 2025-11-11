@@ -1,4 +1,4 @@
-package academy.aicode.spring_ai;
+package academy.aicode.spring_ai.astro;
 
 import java.io.IOException;
 import java.net.URI;

@@ -1,4 +1,4 @@
-package academy.aicode.spring_ai;
+package academy.aicode.spring_ai.astro;
 
 import java.util.List;
 import java.util.Map;
@@ -8,6 +8,9 @@ import org.springframework.ai.embedding.EmbeddingResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import academy.aicode.spring_ai.vector.AstroBibliaVectorService;
+import academy.aicode.spring_ai.vector.DocumentRequest;
 
 @RestController
 public class AstroBibliaVectorController {

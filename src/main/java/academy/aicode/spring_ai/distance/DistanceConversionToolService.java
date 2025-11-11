@@ -1,12 +1,9 @@
-package academy.aicode.spring_ai;
+package academy.aicode.spring_ai.distance;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
-
-import academy.aicode.distance.ConversionFactorProvider;
-import academy.aicode.distance.DistanceConversionService;
 
 @Service
 public class DistanceConversionToolService {

@@ -1,8 +1,11 @@
-package academy.aicode.spring_ai;
+package academy.aicode.spring_ai.astro;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import academy.aicode.spring_ai.distance.DistanceConversionToolService;
+import academy.aicode.spring_ai.wiki.WikiToolService;
 
 @RestController
 public class AstroBibliaToolController {

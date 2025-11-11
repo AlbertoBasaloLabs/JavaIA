@@ -1,4 +1,4 @@
-package academy.aicode.spring_ai;
+package academy.aicode.spring_ai.vector;
 
 import java.util.Map;
 

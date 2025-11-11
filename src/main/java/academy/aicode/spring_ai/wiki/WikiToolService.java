@@ -1,4 +1,4 @@
-package academy.aicode.spring_ai;
+package academy.aicode.spring_ai.wiki;
 
 import java.io.IOException;
 import java.net.URI;

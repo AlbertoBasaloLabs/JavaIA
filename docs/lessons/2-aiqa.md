@@ -19,9 +19,19 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ## CONCEPTOS
 
+Meta prompting
+
+Best practices
+
+Testing (before/after)
+
+Documentation generation
+
+AGENTS.md /context
+
 ---
 
-## CONCRETANDO
+## CONCRETANDO 
 
 ---
 

@@ -1,4 +1,4 @@
-package academy.aicode.distance;
+package academy.aicode.spring_ai.distance;
 
 import org.springframework.stereotype.Service;
 

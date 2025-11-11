@@ -1,4 +1,4 @@
-package academy.aicode.distance;
+package academy.aicode.spring_ai.distance;
 
 public class DistanceConversionRequest {
   private double inputValue;
