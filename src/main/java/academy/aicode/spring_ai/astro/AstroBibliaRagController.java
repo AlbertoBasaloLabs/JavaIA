@@ -23,9 +23,10 @@ public class AstroBibliaRagController {
 
   private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-  private static final String WIKIPEDIA_SUMMARY_URL = "https://es.wikipedia.org/api/rest_v1/page/summary/";
+  private static final String WIKIPEDIA_URL = "https://es.wikipedia.org/api/";
+  private static final String WIKIPEDIA_SUMMARY_URL = WIKIPEDIA_URL + "rest_v1/page/summary/";
   private static final String USER_AGENT_HEADER = "User-Agent";
-  private static final String USER_AGENT_VALUE = "JavaIA/1.0 (+https://example.com/contact)";
+  private static final String USER_AGENT_VALUE = "JavaIA/1.0 (+https://aicode.academy)";
   private static final String ACCEPT_HEADER = "Accept";
   private static final String ACCEPT_JSON = "application/json";
 

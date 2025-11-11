@@ -2,68 +2,90 @@ package academy.aicode.spring_ai.vector;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AstroBibliaVectorService {
 
+  private static final Logger log = LoggerFactory.getLogger(AstroBibliaVectorService.class);
+
+  // Keep MAX_TOKENS visible and documented for workshop attendees.
   private static final int MAX_TOKENS = (int) (8192 * 0.80);
+
+  private static final Pattern WHITESPACE = Pattern.compile("\\s+");
+
   private final AstroBibliaVectorRepository vectorRepository;
 
   public AstroBibliaVectorService(AstroBibliaVectorRepository vectorRepository) {
-    this.vectorRepository = vectorRepository;
+    this.vectorRepository = Objects.requireNonNull(vectorRepository, "vectorRepository must not be null");
   }
 
   /**
-   * Add documents to the vector store after validating their content and length.
-   * 
-   * @param documents
-   * @return
+   * Validate and add documents to the backing vector store.
+   *
+   * - Filters out null/empty content
+   * - Guards against overly long documents (by token/word count)
+   *
+   * @param documents list of DTOs containing content + metadata
+   * @return list of successfully added Document instances (empty if none)
    */
   public List<Document> addDocuments(List<DocumentRequest> documents) {
     if (documents == null || documents.isEmpty()) {
+      log.debug("addDocuments: no documents provided");
       return Collections.emptyList();
     }
     var docs = documents.stream()
-        .filter(doc -> doc != null && doc.getContent() != null && !doc.getContent()
-            .trim()
-            .isEmpty())
-        .filter(doc -> {
-          int wordCount = doc.getContent()
-              .split("\\s+").length;
-          return wordCount <= MAX_TOKENS;
+        .filter(Objects::nonNull)
+        .filter(req -> req.getContent() != null && !req.getContent().trim().isEmpty())
+        .filter(req -> {
+          int wordCount = WHITESPACE.split(req.getContent().trim()).length;
+          if (wordCount > MAX_TOKENS) {
+            log.warn("Skipping document (too many tokens): {} tokens (max {})", wordCount, MAX_TOKENS);
+            return false;
+          }
+          return true;
         })
-        .map(doc -> new Document(doc.getContent(), doc.getMetadata()))
+        .map(req -> new Document(req.getContent(), req.getMetadata()))
         .collect(Collectors.toList());
+
+    if (docs.isEmpty()) {
+      log.debug("addDocuments: no valid documents after filtering");
+      return Collections.emptyList();
+    }
+
     vectorRepository.addDocuments(docs);
+    log.info("Added {} documents to vector store", docs.size());
     return docs;
   }
 
   /**
-   * Semantic Search documents in the vector store based on the provided prompt.
-   * 
-   * @param prompt
-   * @return
+   * Convenience search that uses sensible defaults.
+   *
+   * @param prompt search text
+   * @return matching documents
    */
   public List<Document> searchDocuments(String prompt) {
     return searchDocuments(prompt, 0.4, 2);
   }
 
   /**
-   * Semantic Search documents in the vector store based on the provided prompt
-   * with
-   * configurable similarity threshold and top K results.
-   * 
-   * @param prompt              the search query
-   * @param similarityThreshold the minimum similarity score (0.0 to 1.0)
-   * @param topK                the maximum number of results to return
-   * @return
+   * Perform semantic search with explicit similarityThreshold and topK.
+   *
+   * @param prompt              the search query; if null/blank returns empty list
+   * @param similarityThreshold min similarity score [0..1]
+   * @param topK                number of top results to return
+   * @return list of matching documents
    */
   public List<Document> searchDocuments(String prompt, double similarityThreshold, int topK) {
     if (prompt == null || prompt.trim().isEmpty()) {
+      log.debug("searchDocuments called with empty prompt");
       return Collections.emptyList();
     }
     var searchRequest = org.springframework.ai.vectorstore.SearchRequest.builder()
@@ -71,7 +93,9 @@ public class AstroBibliaVectorService {
         .similarityThreshold(similarityThreshold)
         .topK(topK)
         .build();
-    return vectorRepository.semanticSearchByContent(searchRequest);
+    var results = vectorRepository.semanticSearchByContent(searchRequest);
+    log.info("searchDocuments: prompt='{}' -> {} hits", prompt, results == null ? 0 : results.size());
+    return results;
   }
 
 }
