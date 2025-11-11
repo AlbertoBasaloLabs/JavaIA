@@ -1,0 +1,15 @@
+### Ingest Test - Astronomy Message 1
+http://localhost:8080/vector/ama?prompt=estrellas
+
+### Ingest Test - Astronomy Message 2
+http://localhost:8080/vector/ama?prompt=Nostromo
+
+
+### Ingest Test - Astronomy Message 3
+http://localhost:8080/vector/ama?prompt=asteroides
+
+### Ingest Test - Astronomy Message 4
+http://localhost:8080/vector/ama?prompt=gigante
+
+### Ingest Test - Astronomy Message 4
+http://localhost:8080/vector/ama?prompt=gigante&similarityThreshold=0.1

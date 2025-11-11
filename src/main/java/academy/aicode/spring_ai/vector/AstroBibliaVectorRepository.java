@@ -15,10 +15,22 @@ public class AstroBibliaVectorRepository {
     this.vectorStore = vectorStore;
   }
 
+  /**
+   * Add documents to the vector store.
+   * 
+   * @param docs
+   */
   public void addDocuments(List<Document> docs) {
     vectorStore.add(docs);
   }
 
+  /**
+   * Semantic Search documents in the vector store based on the provided search
+   * request.
+   * 
+   * @param searchRequest
+   * @return
+   */
   public List<Document> semanticSearchByContent(SearchRequest searchRequest) {
     return vectorStore.similaritySearch(searchRequest);
   }
