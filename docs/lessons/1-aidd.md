@@ -58,24 +58,9 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ### Metodologías
 
-- **Vibe Coding:** Desarrollo interactivo con IA (ChOP: Chat Oriented Programming)
-- **Spec Driven Development (SDD):** Desarrollo guiado por especificaciones
-
----
-
-### Principios
-
-1. Preguntar bien (_Prompt Engineering_)
-2. Agregar contexto (_Context Engineering_)
-3. Verificar el resultado (_Trust but verify_)
-
----
-
-### Roles / Etapas
-
-- **Architect**: Se enfoca en el diseño y arquitectura de alto nivel.
-- **Builder**: Centrado en la implementación y tareas de codificación.
-- **Craftsman**: Asegura la calidad a través de pruebas y refinamiento.
+- **Inline Coding:** Desarrollo interactivo con IA (Auto-completado)
+- **Vibe Coding:** Conversacional con IA (ChOP: Chat Oriented Programming)
+- **Spec Driven Development (SDD):** Guiado por especificaciones (Desatendido)
 
 ---
 
@@ -84,6 +69,22 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 **Humano en el Bucle**: Tu trabajo es más estratégico, colaborativo y responsable.
 **Reglas sobre Herramientas**: Los procedimientos y estándares aportan valor.
 **Calidad IA**: No solo más productividad, también software más mantenible.
+
+---
+
+### Principios
+
+1. **Preguntar** bien (_Prompt Engineering_)
+2. **Agregar** contexto (_Context Engineering_)
+3. **Verificar** el resultado (_Trust but verify_)
+
+---
+
+### Roles / Etapas
+
+- **Architect**: Se enfoca en el diseño y arquitectura de alto nivel.
+- **Builder**: Centrado en la implementación y tareas de codificación.
+- **Craftsman**: Asegura la calidad a través de pruebas y refinamiento.
 
 ---
 
