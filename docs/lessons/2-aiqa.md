@@ -69,6 +69,15 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ## CONCRETANDO 
 
+### Usa el Craftsman chat mode
+
+- **/C_feature-test** : Genera tests unitarios basados en las especificaciones.
+- **/C_feature-clean** : Limpia el código y crea documentación para la funcionalidad.
+
+### Otros prompts útiles
+
+
+
 ---
 
 ## CONCLUSIONES
