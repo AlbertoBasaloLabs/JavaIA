@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +23,10 @@ public class AstroBibliaVectorService {
   private static final Pattern WHITESPACE = Pattern.compile("\\s+");
 
   private final AstroBibliaVectorRepository vectorRepository;
+
+  public VectorStore getVectorStore() {
+    return this.vectorRepository.getVectorStore();
+  }
 
   public AstroBibliaVectorService(AstroBibliaVectorRepository vectorRepository) {
     this.vectorRepository = Objects.requireNonNull(vectorRepository, "vectorRepository must not be null");

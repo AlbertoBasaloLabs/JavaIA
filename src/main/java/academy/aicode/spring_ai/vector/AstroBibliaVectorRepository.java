@@ -17,6 +17,10 @@ public class AstroBibliaVectorRepository {
 
   private final VectorStore vectorStore;
 
+  public VectorStore getVectorStore() {
+    return this.vectorStore;
+  }
+
   public AstroBibliaVectorRepository(VectorStore vectorStore) {
     this.vectorStore = Objects.requireNonNull(vectorStore, "vectorStore must not be null");
   }

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.embedding.EmbeddingResponse;
@@ -27,10 +29,15 @@ public class AstroBibliaVectorController {
 
   private final EmbeddingModel embeddingModel;
   private final AstroBibliaVectorService vectorService;
+  private final ChatClient ragChatClient;
+  private final ChatClient chatClient;
 
-  public AstroBibliaVectorController(EmbeddingModel embeddingModel, AstroBibliaVectorService vectorService) {
+  public AstroBibliaVectorController(ChatClient.Builder builder, EmbeddingModel embeddingModel,
+      AstroBibliaVectorService vectorService) {
     this.embeddingModel = embeddingModel;
     this.vectorService = vectorService;
+    this.ragChatClient = builder.defaultAdvisors(new QuestionAnswerAdvisor(vectorService.getVectorStore())).build();
+    this.chatClient = builder.build();
   }
 
   /**
@@ -91,7 +98,7 @@ public class AstroBibliaVectorController {
     double clampedSim = Math.max(0.0, Math.min(1.0, similarityThreshold));
     int clampedTopK = Math.max(1, Math.min(MAX_TOP_K, topK));
 
-    log.debug("Prompt received for vector search: '{}' (similarity={}, topK={})", prompt, clampedSim, clampedTopK);
+    log.info("Prompt received for vector search: '{}' (similarity={}, topK={})", prompt, clampedSim, clampedTopK);
     var results = vectorService.searchDocuments(prompt, clampedSim, clampedTopK);
     if (results == null || results.isEmpty()) {
       log.info("No vector search results for prompt='{}'", prompt);
@@ -99,5 +106,45 @@ public class AstroBibliaVectorController {
     }
     log.info("Vector search for prompt='{}' returned {} results", prompt, results.size());
     return results;
+  }
+
+  /**
+   * Perform semantic search against the AstroBiblia vector store, and use the
+   * chat client to complete the answers.
+   */
+  @GetMapping("vector/chat")
+  public String chatWithVector(@RequestParam String question) {
+    if (question == null || question.isBlank()) {
+      log.debug("chatWithVector called with empty question");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "question must not be empty");
+    }
+
+    log.info("Question received for chat with vector: '{}'", question);
+    var response = ragChatClient.prompt()
+        .system("Expand this text to a 100 words paragraph")
+        .user(question)
+        .call().content();
+    log.info("Chat with vector for question='{}' completed", question);
+    return response;
+  }
+
+  /**
+   * Perform semantic search against the AstroBiblia vector store, and use the
+   * chat client to complete the answers.
+   */
+  @GetMapping("vector/alone")
+  public String chatAlone(@RequestParam String question) {
+    if (question == null || question.isBlank()) {
+      log.debug("chatAlone called with empty question");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "question must not be empty");
+    }
+
+    log.info("Question received for chat alone: '{}'", question);
+    var response = chatClient.prompt()
+        .system("Expand this text to a 100 words paragraph")
+        .user(question)
+        .call().content();
+    log.info("Chat alone for question='{}' completed", response.length());
+    return response;
   }
 }

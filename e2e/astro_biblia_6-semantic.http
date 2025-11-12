@@ -13,3 +13,9 @@ http://localhost:8080/vector/ama?prompt=gigante
 
 ### Ingest Test - Astronomy Message 4
 http://localhost:8080/vector/ama?prompt=gigante&similarityThreshold=0.1
+
+### Ingest Test - Astronomy Message 3
+http://localhost:8080/vector/chat?question=Nostromo
+
+### Ingest Test - Astronomy Message 3
+http://localhost:8080/basic/ama?prompt=Nostromo
