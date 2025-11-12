@@ -59,10 +59,10 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 Consulta del usuario → Recuperación de contexto → Generación aumentada
 ```
 
-Se compone de dos partes principales:
+Se compone de tres partes principales:
 
 - **Retriever**: busca información relevante en una base vectorial o documental.
-- **Augmented**: combina la información recuperada con la consulta del usuario.
+- **Augmenter**: combina la información recuperada con la consulta del usuario.
 - **Generator**: usa el modelo para producir la respuesta final.
 
 ---
@@ -125,6 +125,16 @@ Spring AI facilita esta integración a través de componentes configurables:
 
 ## CONCRETANDO
 
+### Demo AstroBiblia
+- Rag Controller
+- Tool Controller
+- Vector Controller
+
+### Práctica: Extiende la aplicación de blogs
+
+- [ ] Busca información sobre el tema principal en Wikipedia.
+- [ ] Guarda el contenido en el Vector Store.
+- [ ] Busca información previa al generar el post del blog.
 ---
 
 ## CONCLUSIONES

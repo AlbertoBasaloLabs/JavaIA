@@ -51,8 +51,8 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ### Technical Documentation
 
-- **Interna**: Comentarios para explicar el "por qué" detrás del código.
-- **Externa**: Estructura, dependencias, guía de desarrollo y despliegue.
+- **Interna**: Comentarios para explicar el _"por qué"_ detrás del código.
+- **Externa**: Estructura, dependencias, changelog, workflow de desarrollo.
 
 ---
 
@@ -63,20 +63,21 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 - **Best practices** : Librería de prompts y plantillas reutilizables.
 
 - **Standards** : Ficheros y carpetas independientes del agente
-  - `AGENTS.md` `/context`
+  - `AGENTS.md` 
+  - `/context`
 
 ---
 
 ## CONCRETANDO 
 
-### Usa el Craftsman chat mode
+### Demo/Practica Usa el Craftsman chat mode
 
 - **/C_feature-test** : Genera tests unitarios basados en las especificaciones.
 - **/C_feature-clean** : Limpia el código y crea documentación para la funcionalidad.
 
 ### Otros prompts útiles
 
-
+- **/U_aiddbot-instructions-update** : Genera ficheros de instrucciones para las tecnologías y dependencias del proyecto.
 
 ---
 

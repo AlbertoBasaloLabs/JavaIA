@@ -154,6 +154,17 @@ public String getAnythingDoubleChecked(@RequestParam String prompt) {
 
 ## CONCRETANDO
 
+
+### Demo AstroBiblia
+- Basic Controller
+- Safe Controller
+
+### Práctica: Extiende la aplicación de blogs
+
+- [ ] Solicitar mejora y evaluación del título y descripción.
+- [ ] Generar lista de palabras clave para cada post.
+- [ ] Generar contenido del post a partir de título, descripción y palabras clave.
+
 ---
 
 ## CONCLUSIONES

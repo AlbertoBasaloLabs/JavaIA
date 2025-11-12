@@ -24,9 +24,12 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 - La IA afecta a todo trabajo intelectual; a todo el SDLC.
 
+---
+
 ### ¿Algún Disclaimer? 
 
-- Cuesta dinero, no es determinista.
+- Cuesta dinero.
+- No es determinista.
 
 ### ¿Algo más?
 
@@ -38,7 +41,7 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ### Modelos, agentes y editores
 
-- **Modelos:** GPT-5, Claude Sonnet 4, Gemini 2.5
+- **Modelos:** GPT-5, Claude Sonnet 4.5, Gemini 2.5
 - **Agentes:** GitHub Copilot, Cursor Composer, Claude Code, Gemini CLI
 - **Editores:** Visual Studio Code, Cursor, el CLI, la Web, etc.
 
@@ -74,9 +77,9 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ### Principios
 
-1. **Preguntar** bien (_Prompt Engineering_)
-2. **Agregar** contexto (_Context Engineering_)
-3. **Verificar** el resultado (_Trust but verify_)
+- 1 **Preguntar** bien (_Prompt Engineering_)
+- 2 **Agregar** contexto (_Context Engineering_)
+- 3 **Verificar** el resultado (_Trust but verify_)
 
 ---
 
@@ -90,12 +93,22 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 
 ## CONCRETANDO
 
-### GitHub Copilot
+### Demo AIDD con GitHub Copilot
 
 - Instalación y configuración (**VS Code + GitHub Copilot**)
 - `Prompts` : Biblioteca de consultas y comandos. Compartida y evolutiva
 - `Instructions`: Guías, plantillas y guardias automáticas o manuales
 - `Chat Modes`: Pre configuraciones y herramientas para roles específicos
+- `Distance Unit Conversion`: Trabajo en remoto con IA
+
+---
+
+### Práctica: Blog generator
+
+- [ ] Recibe un título y una descripción corta
+  - [ ] Valida tamaños SEO
+  - [ ] Genera slugs amigables
+  - [ ] Guarda en storage (fichero o BD)
 
 ---
 
