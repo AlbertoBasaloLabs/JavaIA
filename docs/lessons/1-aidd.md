@@ -98,7 +98,7 @@ Por [Alberto Basalo](https://albertobasalo.dev)
 - Instalación y configuración (**VS Code + GitHub Copilot**)
 - `Prompts` : Biblioteca de consultas y comandos. Compartida y evolutiva
 - `Instructions`: Guías, plantillas y guardias automáticas o manuales
-- `Chat Modes`: Pre configuraciones y herramientas para roles específicos
+- `Agents`: Pre configuraciones y herramientas para roles específicos
 - `Distance Unit Conversion`: Trabajo en remoto con IA
 
 ---

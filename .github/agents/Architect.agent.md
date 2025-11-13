@@ -1,6 +1,6 @@
 ---
 description: 'This is an agent acting as an architect to write product and system documentation.'
-tools: ['edit', 'search', 'runCommands', 'think', 'changes', 'fetch', 'todos']
+tools: ['runCommands', 'edit', 'search', 'extensions', 'todos', 'usages', 'vscodeAPI', 'changes', 'fetch']
 model: 'Auto'
 ---
 

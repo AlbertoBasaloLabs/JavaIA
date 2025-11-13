@@ -1,6 +1,6 @@
 ---
 description: 'This is an agent acting as a software builder to write specs, design, plan and code for a feature.'
-tools: ['edit/createFile', 'edit/createDirectory', 'edit/editFiles', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'fetch', 'githubRepo', 'extensions', 'todos']
+tools: ['runCommands', 'runTasks', 'edit/createFile', 'edit/createDirectory', 'edit/editFiles', 'search', 'new', 'extensions', 'todos', 'usages', 'vscodeAPI', 'problems', 'changes', 'openSimpleBrowser', 'fetch', 'githubRepo']
 model: 'Auto'
 ---
 

@@ -1,6 +1,6 @@
 ---
 description: 'This is an agent acting as a senior developer to write tests, code reviews and documentation.'
-tools: ['edit', 'search', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'think', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos']
+tools: ['runCommands', 'runTasks', 'edit', 'search', 'extensions', 'todos', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo']
 model: 'Auto'
 ---
 
