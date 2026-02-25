@@ -6,6 +6,7 @@ Inteligencia Artificial con Java
 ## Documentation
 
 - [Product Requirements Document (PRD)](docs/PRD.md)
+- [Server Scripts Usage (BAT and PowerShell)](docs/server-usage.md)
 
 ---
 

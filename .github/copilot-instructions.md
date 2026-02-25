@@ -36,6 +36,14 @@ Keep going until the user’s query is completely resolved, before ending your t
 - Favor unix-like commands
 - If running on Windows use the git bash terminal for all console commands.
 - Fallback to the command prompt if git bash is not available.
+- Never run commands in background mode; always run commands in foreground and wait for completion.
+
+### Server scripts (Windows)
+
+- Prefer project helper scripts to manage the local server lifecycle.
+- Command Prompt: use `server.bat start|stop|status`.
+- PowerShell: use `powershell -NoProfile -ExecutionPolicy Bypass -File .\\server.ps1 -Action start|stop|status`.
+- Default script port is `8080`.
 
 ### Git
 
