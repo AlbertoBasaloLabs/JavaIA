@@ -14,6 +14,8 @@ public class ConversionFactorProvider {
     KILOMETER, AU, LIGHT_YEAR, PARSEC
   }
 
+  public static final String SUPPORTED_UNITS = "KILOMETER, AU, LIGHT_YEAR, PARSEC";
+
   private static final Map<Unit, Double> TO_KILOMETER;
   static {
     Map<Unit, Double> map = new HashMap<>();
@@ -31,8 +33,11 @@ public class ConversionFactorProvider {
    * @return true if supported; false otherwise
    */
   public static boolean isSupported(String unit) {
+    if (unit == null || unit.isBlank()) {
+      return false;
+    }
     try {
-      Unit.valueOf(unit.toUpperCase());
+      Unit.valueOf(unit.strip().toUpperCase());
       return true;
     } catch (IllegalArgumentException e) {
       return false;
@@ -63,7 +68,18 @@ public class ConversionFactorProvider {
    * @throws IllegalArgumentException if the unit is not supported
    */
   public static Unit parseUnit(String unit) {
-    return Unit.valueOf(unit.toUpperCase());
+    if (unit == null || unit.isBlank()) {
+      throw new IllegalArgumentException("Unit must not be empty. " + getSupportedUnitsMessage());
+    }
+    try {
+      return Unit.valueOf(unit.strip().toUpperCase());
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("Unsupported unit '" + unit + "'. " + getSupportedUnitsMessage());
+    }
+  }
+
+  public static String getSupportedUnitsMessage() {
+    return "Supported units: " + SUPPORTED_UNITS;
   }
 
   /**

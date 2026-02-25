@@ -5,12 +5,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
+import academy.aicode.spring_ai.api.RequestTextValidator;
 import reactor.core.publisher.Flux;
 
 /**
@@ -26,14 +25,13 @@ public class AstroBibliaBasicController {
   private static final Logger log = LoggerFactory.getLogger(AstroBibliaBasicController.class);
 
   private final ChatClient chatClient;
+  private final RequestTextValidator requestTextValidator;
 
   private static final String ASTRONOMY_SYSTEM_MESSAGE = "Eres un experto en Astronomía. Responde solo preguntas relacionadas con la Astronomía. Si la pregunta no está relacionada con la Astronomía, responde con 'No sé sobre ese tema.'";
 
-  // Safety guard to avoid accidental huge prompts during demos
-  private static final int MAX_PROMPT_LENGTH = 2000;
-
-  public AstroBibliaBasicController(ChatClient.Builder chatClientBuilder) {
+  public AstroBibliaBasicController(ChatClient.Builder chatClientBuilder, RequestTextValidator requestTextValidator) {
     this.chatClient = chatClientBuilder.build();
+    this.requestTextValidator = requestTextValidator;
   }
 
   /**
@@ -45,7 +43,7 @@ public class AstroBibliaBasicController {
    */
   @GetMapping("basic/ama")
   public String getAnything(@RequestParam String prompt) {
-    validatePrompt(prompt);
+    requestTextValidator.validateNotBlankAndMaxLength(prompt, "prompt", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.info("basic/ama called ({} chars)", prompt.length());
     return chatClient.prompt()
         .user(prompt).call().content();
@@ -60,7 +58,7 @@ public class AstroBibliaBasicController {
    */
   @GetMapping("basic/astro")
   public String getAstronomy(@RequestParam String prompt) {
-    validatePrompt(prompt);
+    requestTextValidator.validateNotBlankAndMaxLength(prompt, "prompt", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.debug("basic/astro called ({} chars)", prompt.length());
     return chatClient.prompt()
         .system(ASTRONOMY_SYSTEM_MESSAGE)
@@ -76,7 +74,7 @@ public class AstroBibliaBasicController {
    */
   @GetMapping("basic/planet")
   public String getPlanetInfo(@RequestParam String planet) {
-    validatePrompt(planet);
+    requestTextValidator.validateNotBlankAndMaxLength(planet, "planet", RequestTextValidator.DEFAULT_MAX_LENGTH);
     var userPromptTemplate = "Proporciona una breve descripción del planeta {{planet}} incluyendo sus características clave y cualquier dato interesante.";
     var userPrompt = userPromptTemplate.replace("{{planet}}", planet);
     log.debug("basic/planet called for planet='{}' (prompt {} chars)", planet, userPrompt.length());
@@ -95,7 +93,7 @@ public class AstroBibliaBasicController {
    */
   @GetMapping("basic/planet/satellites")
   public String getPlanetSatellites(@RequestParam String planet) {
-    validatePrompt(planet);
+    requestTextValidator.validateNotBlankAndMaxLength(planet, "planet", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.debug("basic/planet/satellites called for planet='{}'", planet);
 
     return chatClient.prompt()
@@ -116,7 +114,7 @@ public class AstroBibliaBasicController {
    */
   @GetMapping("basic/planet/satellites/structured")
   public Satellites getPlanetSatellitesStructured(@RequestParam String planet) {
-    validatePrompt(planet);
+    requestTextValidator.validateNotBlankAndMaxLength(planet, "planet", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.debug("basic/planet/satellites/structured called for planet='{}'", planet);
 
     return chatClient.prompt()
@@ -136,7 +134,7 @@ public class AstroBibliaBasicController {
    */
   @GetMapping("basic/planet/satellites/stream")
   public Flux<String> getPlanetSatellitesStream(@RequestParam String planet) {
-    validatePrompt(planet);
+    requestTextValidator.validateNotBlankAndMaxLength(planet, "planet", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.debug("basic/planet/satellites/stream called for planet='{}'", planet);
 
     return chatClient.prompt()
@@ -145,21 +143,6 @@ public class AstroBibliaBasicController {
           u.text("¿Cuáles son los satélites del planeta {planet} ?");
           u.param("planet", planet);
         }).stream().content();
-  }
-
-  /**
-   * Validate a user-supplied prompt/parameter. Throws a 400 response for
-   * null/blank values and a 413 if the content exceeds MAX_PROMPT_LENGTH.
-   */
-  private void validatePrompt(String prompt) {
-    if (prompt == null || prompt.isBlank()) {
-      log.debug("validatePrompt: called with empty value");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "parameter must not be empty");
-    }
-    if (prompt.length() > MAX_PROMPT_LENGTH) {
-      log.warn("validatePrompt: parameter length {} exceeds max {}", prompt.length(), MAX_PROMPT_LENGTH);
-      throw new ResponseStatusException(HttpStatus.PAYLOAD_TOO_LARGE, "parameter too long; reduce size");
-    }
   }
 
 }

@@ -10,12 +10,11 @@ import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvi
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.embedding.EmbeddingResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
+import academy.aicode.spring_ai.api.RequestTextValidator;
 import academy.aicode.spring_ai.vector.AstroBibliaVectorService;
 import academy.aicode.spring_ai.vector.DocumentRequest;
 
@@ -31,11 +30,13 @@ public class AstroBibliaVectorController {
   private final AstroBibliaVectorService vectorService;
   private final ChatClient ragChatClient;
   private final ChatClient chatClient;
+  private final RequestTextValidator requestTextValidator;
 
   public AstroBibliaVectorController(ChatClient.Builder builder, EmbeddingModel embeddingModel,
-      AstroBibliaVectorService vectorService) {
+      AstroBibliaVectorService vectorService, RequestTextValidator requestTextValidator) {
     this.embeddingModel = embeddingModel;
     this.vectorService = vectorService;
+    this.requestTextValidator = requestTextValidator;
     this.ragChatClient = builder.defaultAdvisors(new QuestionAnswerAdvisor(vectorService.getVectorStore())).build();
     this.chatClient = builder.build();
   }
@@ -46,10 +47,7 @@ public class AstroBibliaVectorController {
    */
   @GetMapping("vector/embedding")
   public Map<String, Object> embed(@RequestParam() String message) {
-    if (message == null || message.isBlank()) {
-      log.debug("embed called with empty message");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "message must not be empty");
-    }
+    requestTextValidator.validateNotBlank(message, "message");
     log.debug("Computing embedding for message ({} chars)", message.length());
     EmbeddingResponse embeddingResponse = this.embeddingModel.embedForResponse(List.of(message));
     return Map.of("embedding", embeddingResponse);
@@ -61,15 +59,7 @@ public class AstroBibliaVectorController {
    */
   @GetMapping("vector/ingest")
   public Map<String, Object> ingest(@RequestParam() String message) {
-    if (message == null || message.isBlank()) {
-      log.debug("ingest called with empty message");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "message must not be empty");
-    }
-    if (message.length() > MAX_INGEST_CHAR_LENGTH) {
-      log.warn("Rejecting ingest: message length {} exceeds max {}", message.length(), MAX_INGEST_CHAR_LENGTH);
-      throw new ResponseStatusException(HttpStatus.PAYLOAD_TOO_LARGE,
-          "message too long; reduce size before ingesting");
-    }
+    requestTextValidator.validateNotBlankAndMaxLength(message, "message", MAX_INGEST_CHAR_LENGTH);
 
     var addDocuments = this.vectorService
         .addDocuments(List.of(
@@ -89,10 +79,7 @@ public class AstroBibliaVectorController {
       @RequestParam String prompt,
       @RequestParam(defaultValue = "0.4") double similarityThreshold,
       @RequestParam(defaultValue = "2") int topK) {
-    if (prompt == null || prompt.isBlank()) {
-      log.debug("getFromVector called with empty prompt");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "prompt must not be empty");
-    }
+    requestTextValidator.validateNotBlank(prompt, "prompt");
 
     // clamp values to safe ranges
     double clampedSim = Math.max(0.0, Math.min(1.0, similarityThreshold));
@@ -114,10 +101,7 @@ public class AstroBibliaVectorController {
    */
   @GetMapping("vector/chat")
   public String chatWithVector(@RequestParam String question) {
-    if (question == null || question.isBlank()) {
-      log.debug("chatWithVector called with empty question");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "question must not be empty");
-    }
+    requestTextValidator.validateNotBlank(question, "question");
 
     log.info("Question received for chat with vector: '{}'", question);
     var response = ragChatClient.prompt()
@@ -134,10 +118,7 @@ public class AstroBibliaVectorController {
    */
   @GetMapping("vector/alone")
   public String chatAlone(@RequestParam String question) {
-    if (question == null || question.isBlank()) {
-      log.debug("chatAlone called with empty question");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "question must not be empty");
-    }
+    requestTextValidator.validateNotBlank(question, "question");
 
     log.info("Question received for chat alone: '{}'", question);
     var response = chatClient.prompt()

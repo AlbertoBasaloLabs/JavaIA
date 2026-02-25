@@ -11,8 +11,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import academy.aicode.spring_ai.api.GlobalRestExceptionHandler;
+
 @WebMvcTest(DistanceConversionController.class)
-@Import(DistanceConversionService.class)
+@Import({ DistanceConversionService.class, GlobalRestExceptionHandler.class })
 class DistanceConversionControllerTest {
 
   @Autowired
@@ -92,7 +94,7 @@ class DistanceConversionControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(requestBody))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$").value("Input value must be non-negative"));
+        .andExpect(jsonPath("$").value("Invalid inputValue: must be non-negative"));
   }
 
   @Test
@@ -109,7 +111,7 @@ class DistanceConversionControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(requestBody))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$").value("Unsupported unit. Supported: KILOMETER, AU, LIGHT_YEAR, PARSEC"));
+        .andExpect(jsonPath("$").value("Unsupported unit 'MILE'. Supported units: KILOMETER, AU, LIGHT_YEAR, PARSEC"));
   }
 
   @Test
@@ -126,7 +128,24 @@ class DistanceConversionControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(requestBody))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$").value("Unsupported unit. Supported: KILOMETER, AU, LIGHT_YEAR, PARSEC"));
+        .andExpect(jsonPath("$").value("Unsupported unit 'METER'. Supported units: KILOMETER, AU, LIGHT_YEAR, PARSEC"));
+  }
+
+  @Test
+  void shouldReturnBadRequestWhenUnitIsBlank() throws Exception {
+    String requestBody = """
+        {
+          "inputValue": 100.0,
+          "inputUnit": "",
+          "outputUnit": "KILOMETER"
+        }
+        """;
+
+    mockMvc.perform(post("/api/distance-conversion")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(requestBody))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$").value("Unit must not be empty. Supported units: KILOMETER, AU, LIGHT_YEAR, PARSEC"));
   }
 
   @Test

@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+
+import academy.aicode.spring_ai.api.RequestTextValidator;
 
 @RestController
 public class AstroBibliaSafeController {
@@ -17,18 +17,18 @@ public class AstroBibliaSafeController {
   private static final Logger log = LoggerFactory.getLogger(AstroBibliaSafeController.class);
 
   private final ChatClient chatClient;
+  private final RequestTextValidator requestTextValidator;
 
   private static final String ASTRONOMY_SYSTEM_MESSAGE = "Eres un experto en Astronomía. Responde solo preguntas relacionadas con la Astronomía. Si la pregunta no está relacionada con la Astronomía, responde con 'No sé sobre ese tema.'";
-
-  // Safety guard to avoid accidental huge prompts during demos
-  private static final int MAX_PROMPT_LENGTH = 2000;
 
   /**
    * Create a controller that attaches a message-based chat memory advisor.
    */
-  public AstroBibliaSafeController(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory) {
+  public AstroBibliaSafeController(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory,
+      RequestTextValidator requestTextValidator) {
     var memoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
     this.chatClient = chatClientBuilder.defaultAdvisors(memoryAdvisor).build();
+    this.requestTextValidator = requestTextValidator;
     log.info("AstroBibliaSafeController initialized with memory advisor");
   }
 
@@ -41,7 +41,7 @@ public class AstroBibliaSafeController {
    */
   @GetMapping("safe/ama")
   public String getAnythingSanitized(@RequestParam String prompt) {
-    validatePrompt(prompt);
+    requestTextValidator.validateNotBlankAndMaxLength(prompt, "prompt", RequestTextValidator.DEFAULT_MAX_LENGTH);
     var sanitizedPrompt = sanitizePrompt(prompt);
     log.info("safe/ama called ({} chars) - sanitized to {} chars", prompt.length(), sanitizedPrompt.length());
     return chatClient.prompt()
@@ -74,7 +74,7 @@ public class AstroBibliaSafeController {
    */
   @GetMapping("safe/ama/checked")
   public String getAnythingDoubleChecked(@RequestParam String prompt) {
-    validatePrompt(prompt);
+    requestTextValidator.validateNotBlankAndMaxLength(prompt, "prompt", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.info("safe/ama/checked called ({} chars)", prompt.length());
     // make a previous call to check for prompt injections
     var checkPrompt = """
@@ -96,20 +96,6 @@ public class AstroBibliaSafeController {
         .user(prompt).call().content();
   }
 
-  /**
-   * Validate a user-supplied prompt/parameter. Throws a 400 response for
-   * null/blank values and a 413 if the content exceeds MAX_PROMPT_LENGTH.
-   */
-  private void validatePrompt(String prompt) {
-    if (prompt == null || prompt.isBlank()) {
-      log.debug("validatePrompt: called with empty value");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "parameter must not be empty");
-    }
-    if (prompt.length() > MAX_PROMPT_LENGTH) {
-      log.warn("validatePrompt: parameter length {} exceeds max {}", prompt.length(), MAX_PROMPT_LENGTH);
-      throw new ResponseStatusException(HttpStatus.PAYLOAD_TOO_LARGE, "parameter too long; reduce size");
-    }
-  }
 }
 
 enum RiskLevel {

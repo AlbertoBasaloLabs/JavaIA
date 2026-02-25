@@ -18,7 +18,8 @@ public class DistanceConversionToolService {
   /**
    * Tool entry point for use by AI agents to perform distance conversions.
    */
-  @Tool(name = "DistanceConverter", description = "Converts astronomical distances between different units. Supported units: KILOMETER, AU, LIGHT_YEAR, PARSEC.")
+  @Tool(name = "DistanceConverter", description = "Converts astronomical distances between different units. Supported units: "
+      + ConversionFactorProvider.SUPPORTED_UNITS + ".")
   public String convertDistance(double value, String fromUnit, String toUnit) {
     log.info("Distance conversion requested: {} {} to {}", value, fromUnit, toUnit);
     try {
@@ -30,11 +31,8 @@ public class DistanceConversionToolService {
       return String.format("%.6e %s equals %.6e %s (conversion factor: %.6e)",
           value, fromUnit, result, toUnit, factor);
     } catch (IllegalArgumentException e) {
-      log.error("Invalid unit provided: {}", e.getMessage());
-      return "Error: Invalid unit. Supported units are: KILOMETER, AU, LIGHT_YEAR, PARSEC";
-    } catch (Exception e) {
-      log.error("Error during conversion: {}", e.getMessage());
-      return "Error during conversion: " + e.getMessage();
+      log.error("Invalid conversion request", e);
+      return "Error: " + e.getMessage();
     }
   }
 }

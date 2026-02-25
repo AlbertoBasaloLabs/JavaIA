@@ -3,12 +3,11 @@ package academy.aicode.spring_ai.astro;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
+import academy.aicode.spring_ai.api.RequestTextValidator;
 import academy.aicode.spring_ai.distance.DistanceConversionToolService;
 import academy.aicode.spring_ai.wiki.WikiToolService;
 
@@ -20,15 +19,14 @@ public class AstroBibliaToolController {
   private final ChatClient chatClient;
   private final WikiToolService wikiToolService;
   private final DistanceConversionToolService distanceConversionToolService;
-
-  // Safety guard to avoid accidental huge prompts during demos
-  private static final int MAX_PROMPT_LENGTH = 2000;
+  private final RequestTextValidator requestTextValidator;
 
   public AstroBibliaToolController(ChatClient.Builder chatClientBuilder, WikiToolService wikiToolService,
-      DistanceConversionToolService distanceConversionToolService) {
+      DistanceConversionToolService distanceConversionToolService, RequestTextValidator requestTextValidator) {
     this.chatClient = chatClientBuilder.build();
     this.wikiToolService = wikiToolService;
     this.distanceConversionToolService = distanceConversionToolService;
+    this.requestTextValidator = requestTextValidator;
     log.info("AstroBibliaToolController initialized (wikiTool={}, distanceTool={})", wikiToolService != null,
         distanceConversionToolService != null);
   }
@@ -41,7 +39,7 @@ public class AstroBibliaToolController {
    */
   @GetMapping("tool/ama/wiki")
   public String getFromWiki(@RequestParam String prompt) {
-    validatePrompt(prompt);
+    requestTextValidator.validateNotBlankAndMaxLength(prompt, "prompt", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.debug("tool/ama/wiki called ({} chars)", prompt.length());
     return chatClient.prompt()
         .system(
@@ -55,7 +53,7 @@ public class AstroBibliaToolController {
 
   @GetMapping("tool/ama/distance")
   public String getDistanceConversion(@RequestParam String prompt) {
-    validatePrompt(prompt);
+    requestTextValidator.validateNotBlankAndMaxLength(prompt, "prompt", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.debug("tool/ama/distance called ({} chars)", prompt.length());
     var systemMessage = """
         Eres un asistente útil que convierte distancias astronómicas.
@@ -74,7 +72,7 @@ public class AstroBibliaToolController {
    */
   @GetMapping("tool/ama/distance/light-time")
   public String getDistanceConversionLightTime(@RequestParam String prompt) {
-    validatePrompt(prompt);
+    requestTextValidator.validateNotBlankAndMaxLength(prompt, "prompt", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.debug("tool/ama/distance/light-time called ({} chars)", prompt.length());
     var systemMessage = """
         Eres un asistente que proporciona distancias de la tierra a otros cuerpos celestes.
@@ -87,20 +85,6 @@ public class AstroBibliaToolController {
         .content();
   }
 
-  /**
-   * Validate a user-supplied prompt/parameter. Throws a 400 response for
-   * null/blank values and a 413 if the content exceeds MAX_PROMPT_LENGTH.
-   */
-  private void validatePrompt(String prompt) {
-    if (prompt == null || prompt.isBlank()) {
-      log.debug("validatePrompt: called with empty value");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "parameter must not be empty");
-    }
-    if (prompt.length() > MAX_PROMPT_LENGTH) {
-      log.warn("validatePrompt: parameter length {} exceeds max {}", prompt.length(), MAX_PROMPT_LENGTH);
-      throw new ResponseStatusException(HttpStatus.PAYLOAD_TOO_LARGE, "parameter too long; reduce size");
-    }
-  }
 }
 
 // ToDo: Vector DB (ingest, query)

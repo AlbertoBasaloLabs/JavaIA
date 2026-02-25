@@ -11,14 +11,14 @@ import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import academy.aicode.spring_ai.api.RequestTextValidator;
 
 @RestController
 public class AstroBibliaRagController {
@@ -26,6 +26,7 @@ public class AstroBibliaRagController {
   private static final Logger log = LoggerFactory.getLogger(AstroBibliaRagController.class);
 
   private final ChatClient chatClient;
+  private final RequestTextValidator requestTextValidator;
 
   private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -36,11 +37,9 @@ public class AstroBibliaRagController {
   private static final String ACCEPT_HEADER = "Accept";
   private static final String ACCEPT_JSON = "application/json";
 
-  // Safety guard to avoid accidental huge prompts during demos
-  private static final int MAX_PROMPT_LENGTH = 2000;
-
-  public AstroBibliaRagController(ChatClient.Builder chatClientBuilder) {
+  public AstroBibliaRagController(ChatClient.Builder chatClientBuilder, RequestTextValidator requestTextValidator) {
     this.chatClient = chatClientBuilder.build();
+    this.requestTextValidator = requestTextValidator;
     log.info("AstroBibliaRagController initialized");
   }
 
@@ -52,7 +51,7 @@ public class AstroBibliaRagController {
    */
   @GetMapping("rag/ama/local")
   public String getLocalData(@RequestParam String prompt) {
-    validatePrompt(prompt);
+    requestTextValidator.validateNotBlankAndMaxLength(prompt, "prompt", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.debug("rag/ama/local called ({} chars)", prompt.length());
     var localInfo = localData(prompt);
     var systemPrompt = "Usa la siguiente información para responder a la pregunta de Astronomía: "
@@ -82,7 +81,7 @@ public class AstroBibliaRagController {
    */
   @GetMapping("rag/ama/web")
   public String getFromWeb(@RequestParam String prompt) {
-    validatePrompt(prompt);
+    requestTextValidator.validateNotBlankAndMaxLength(prompt, "prompt", RequestTextValidator.DEFAULT_MAX_LENGTH);
     log.debug("rag/ama/web called ({} chars)", prompt.length());
     var wiki = fetchWikipedia(prompt.strip());
     if (wiki == null || wiki.isBlank()) {
@@ -125,18 +124,4 @@ public class AstroBibliaRagController {
     }
   }
 
-  /**
-   * Validate a user-supplied prompt/parameter. Throws a 400 response for
-   * null/blank values and a 413 if the content exceeds MAX_PROMPT_LENGTH.
-   */
-  private void validatePrompt(String prompt) {
-    if (prompt == null || prompt.isBlank()) {
-      log.debug("validatePrompt: called with empty value");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "parameter must not be empty");
-    }
-    if (prompt.length() > MAX_PROMPT_LENGTH) {
-      log.warn("validatePrompt: parameter length {} exceeds max {}", prompt.length(), MAX_PROMPT_LENGTH);
-      throw new ResponseStatusException(HttpStatus.PAYLOAD_TOO_LARGE, "parameter too long; reduce size");
-    }
-  }
 }
